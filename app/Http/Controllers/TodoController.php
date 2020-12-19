@@ -7,37 +7,80 @@ use Illuminate\Http\Request;
 
 class TodoController extends Controller
 {
-    public function all(Request $request)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
+        //get all Todos
         return response()->json([
             'message' => 'successful',
             'data' => Todo::all(),
         ]);
     }
 
-    public function create(Request $request)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
     {
-        $todo = new Todo();
-        $todo->todo = $request->get('text');
-        $todo->save();
-
+        //create a Todo
         return response()->json([
             'message' => 'successful',
+            'data' => Todo::create($request->all())
         ]);
     }
 
-    public function get(Todo $todo)
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Todo  $todo
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Todo $todo)
     {
-        # code...
+        //show a todo
+        return response()->json([
+            'message' => 'successful',
+            'data' => $todo,
+        ]);
     }
 
-    public function update(Todo $todo)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Todo  $todo
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Todo $todo)
     {
-        # code...
+        //update todo
+        if($todo->update($request->all())){
+            return response()->json([
+                'message' => 'successful',
+            ]);
+        };
     }
 
-    public function delete(Todo $todo)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Todo  $todo
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Todo $todo)
     {
-        # code...
+        //delete a todo
+        if($todo->delete()){
+            return response()->json([
+                'message' => 'successful',
+            ]);
+        }
     }
 }
