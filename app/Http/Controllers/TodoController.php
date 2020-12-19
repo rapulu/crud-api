@@ -15,10 +15,17 @@ class TodoController extends Controller
     public function index()
     {
         //get all Todos
-        return response()->json([
-            'message' => 'successful',
-            'data' => Todo::all(),
-        ]);
+        try {
+            return response()->json([
+                'message' => 'successful',
+                'data' => Todo::all(),
+            ], 200);
+        } catch (\Exception $th) {
+            //Error message;
+            return response()->json([
+                'message' => 'Something went wrong.'], 500);
+        }
+
     }
 
     /**
@@ -30,10 +37,16 @@ class TodoController extends Controller
     public function store(Request $request)
     {
         //create a Todo
-        return response()->json([
-            'message' => 'successful',
-            'data' => Todo::create($request->all())
-        ]);
+        try {
+            return response()->json([
+                'message' => 'successful',
+                'data' => Todo::create($request->all())
+            ]);
+        } catch (\Exception $th) {
+            //Error message;
+            return response()->json([
+                'message' => 'Something went wrong.'], 500);
+        }
     }
 
     /**
